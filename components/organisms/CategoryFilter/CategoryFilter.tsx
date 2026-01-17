@@ -1,0 +1,44 @@
+'use client'
+
+import { CategoryChip } from '@/components/molecules'
+import { CATEGORY_LIST } from '@/lib/constants/categories'
+import { useAppStore } from '@/store'
+import type { ShopCategory } from '@/types'
+import { cn } from '@/lib/utils/cn'
+
+export interface CategoryFilterProps {
+  className?: string
+}
+
+export const CategoryFilter = ({ className }: CategoryFilterProps) => {
+  const { selectedCategory, setSelectedCategory } = useAppStore()
+
+  const handleSelect = (category: ShopCategory | null) => {
+    setSelectedCategory(category === selectedCategory ? null : category)
+  }
+
+  return (
+    <div className={cn('flex gap-2 overflow-x-auto no-scrollbar px-4', className)}>
+      <button
+        onClick={() => handleSelect(null)}
+        className={cn(
+          'px-3 py-1.5 text-sm rounded-full border whitespace-nowrap transition-all',
+          !selectedCategory
+            ? 'bg-gold/20 border-gold text-gold'
+            : 'bg-dark border-medium text-cream hover:border-gold/50'
+        )}
+      >
+        All
+      </button>
+      {CATEGORY_LIST.map((cat) => (
+        <CategoryChip
+          key={cat.id}
+          category={cat.id}
+          selected={selectedCategory === cat.id}
+          onClick={() => handleSelect(cat.id)}
+          size="sm"
+        />
+      ))}
+    </div>
+  )
+}
