@@ -123,10 +123,10 @@ export const ShopSheet = ({ shopId, onClose }: ShopSheetProps) => {
 
             {/* Meta info */}
             <div className="px-4 mt-2 flex items-center gap-3 text-sm text-muted">
-              {shop.users && (
+              {shop.bali_users && (
                 <UserBadge
-                  username={shop.users.username}
-                  avatarUrl={shop.users.avatar_url}
+                  username={shop.bali_users.username}
+                  avatarUrl={shop.bali_users.avatar_url}
                   size="sm"
                 />
               )}
@@ -139,9 +139,9 @@ export const ShopSheet = ({ shopId, onClose }: ShopSheetProps) => {
             {/* Items Grid */}
             <div className="px-4 mt-4">
               <Text variant="small" className="text-muted mb-2">Items</Text>
-              {canViewItems && shop.items && shop.items.length > 0 ? (
+              {canViewItems && shop.bali_items && shop.bali_items.length > 0 ? (
                 <div className="grid grid-cols-3 gap-2">
-                  {shop.items.map((item) => (
+                  {shop.bali_items.map((item) => (
                     <div key={item.id} className="relative">
                       <img
                         src={item.photo_url}
