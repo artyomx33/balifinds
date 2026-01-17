@@ -13,6 +13,7 @@ interface NavItem {
 
 const NAV_ITEMS: NavItem[] = [
   { icon: '🗺️', label: 'Map', href: '/map' },
+  { icon: '📍', label: 'Nearby', href: '/nearby' },
   { icon: '👤', label: 'Profile', href: '/profile', requiresAuth: true },
   { icon: '🏆', label: 'Leaders', href: '/leaderboard' },
 ]
