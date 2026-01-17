@@ -19,11 +19,10 @@ export default function LeaderboardPage() {
     queryKey: ['leaderboard', period],
     queryFn: async () => {
       if (!supabase) return []
-      let query = supabase
-        .from('shops')
+      let query = (supabase.from('bali_shops') as any)
         .select(`
           user_id,
-          users!inner(username, avatar_url)
+          bali_users!inner(username, avatar_url)
         `)
 
       if (period === 'month') {
@@ -54,8 +53,8 @@ export default function LeaderboardPage() {
         } else {
           userMap.set(userId, {
             userId,
-            username: shop.users?.username || 'Unknown',
-            avatarUrl: shop.users?.avatar_url || null,
+            username: shop.bali_users?.username || 'Unknown',
+            avatarUrl: shop.bali_users?.avatar_url || null,
             shopCount: 1,
           })
         }

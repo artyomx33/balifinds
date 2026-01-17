@@ -18,8 +18,8 @@ interface ShopRow {
   max_price_millions: number | null
   created_at: string
   user_id: string | null
-  users?: { username: string; avatar_url: string | null } | null
-  items?: Array<{ id: string; photo_url: string; price_millions: number }>
+  bali_users?: { username: string; avatar_url: string | null } | null
+  bali_items?: Array<{ id: string; photo_url: string; price_millions: number }>
 }
 
 export const useShops = (filters?: ShopFilters) => {
@@ -29,7 +29,7 @@ export const useShops = (filters?: ShopFilters) => {
     queryKey: ['shops', filters],
     queryFn: async () => {
       if (!supabase) return []
-      let query = (supabase.from('shops') as any)
+      let query = (supabase.from('bali_shops') as any)
         .select(`
           id,
           photo_url,
@@ -42,7 +42,7 @@ export const useShops = (filters?: ShopFilters) => {
           min_price_millions,
           max_price_millions,
           created_at,
-          users!left(username, avatar_url)
+          bali_users!left(username, avatar_url)
         `)
 
       if (filters?.category) {
@@ -70,11 +70,11 @@ export const useShopDetail = (shopId: string) => {
     queryKey: ['shop', shopId],
     queryFn: async () => {
       if (!supabase) return null
-      const { data, error } = await (supabase.from('shops') as any)
+      const { data, error } = await (supabase.from('bali_shops') as any)
         .select(`
           *,
-          users!left(username, avatar_url),
-          items(id, photo_url, price_millions)
+          bali_users!left(username, avatar_url),
+          bali_items(id, photo_url, price_millions)
         `)
         .eq('id', shopId)
         .single()
@@ -104,7 +104,7 @@ export const useCreateShop = () => {
       const { data: { user } } = await supabase.auth.getUser()
 
       // Create shop
-      const { data: shop, error: shopError } = await (supabase.from('shops') as any)
+      const { data: shop, error: shopError } = await (supabase.from('bali_shops') as any)
         .insert({
           user_id: user?.id || null,
           photo_url: data.photoUrl,
@@ -120,7 +120,7 @@ export const useCreateShop = () => {
 
       // Create items
       if (data.items.length > 0) {
-        const { error: itemsError } = await (supabase.from('items') as any)
+        const { error: itemsError } = await (supabase.from('bali_items') as any)
           .insert(
             data.items.map(item => ({
               shop_id: shop.id,

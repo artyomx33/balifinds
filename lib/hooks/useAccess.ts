@@ -30,8 +30,7 @@ export const useAccess = () => {
     supabase.auth.getUser().then(({ data: { user: authUser } }: { data: { user: AuthUser | null } }) => {
       if (authUser) {
         // Fetch full user profile
-        supabase
-          .from('users')
+        (supabase.from('bali_users') as any)
           .select('*')
           .eq('id', authUser.id)
           .single()

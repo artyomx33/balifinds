@@ -1,14 +1,12 @@
 -- ============================================
 -- BaliFinds Database Schema
+-- All tables prefixed with bali_
 -- ============================================
-
--- Enable PostGIS for geospatial queries
-CREATE EXTENSION IF NOT EXISTS postgis;
 
 -- ============================================
 -- USERS
 -- ============================================
-CREATE TABLE users (
+CREATE TABLE bali_users (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   email TEXT UNIQUE NOT NULL,
   username TEXT UNIQUE NOT NULL,
@@ -18,15 +16,15 @@ CREATE TABLE users (
 );
 
 -- Username format validation (lowercase alphanumeric + underscore, 3-20 chars)
-ALTER TABLE users ADD CONSTRAINT username_format
+ALTER TABLE bali_users ADD CONSTRAINT bali_username_format
   CHECK (username ~ '^[a-z0-9_]{3,20}$');
 
 -- ============================================
 -- SHOPS
 -- ============================================
-CREATE TABLE shops (
+CREATE TABLE bali_shops (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id UUID REFERENCES users(id) ON DELETE SET NULL,
+  user_id UUID REFERENCES bali_users(id) ON DELETE SET NULL,
 
   -- Photo (required)
   photo_url TEXT NOT NULL,
@@ -51,19 +49,15 @@ CREATE TABLE shops (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Geospatial index for location queries
-CREATE INDEX idx_shops_location ON shops
-  USING GIST (ST_SetSRID(ST_MakePoint(longitude, latitude), 4326));
-
-CREATE INDEX idx_shops_category ON shops(category);
-CREATE INDEX idx_shops_avg_price ON shops(avg_price_millions);
+CREATE INDEX idx_bali_shops_category ON bali_shops(category);
+CREATE INDEX idx_bali_shops_avg_price ON bali_shops(avg_price_millions);
 
 -- ============================================
 -- ITEMS
 -- ============================================
-CREATE TABLE items (
+CREATE TABLE bali_items (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  shop_id UUID REFERENCES shops(id) ON DELETE CASCADE,
+  shop_id UUID REFERENCES bali_shops(id) ON DELETE CASCADE,
 
   -- Photo (required)
   photo_url TEXT NOT NULL,
@@ -74,30 +68,30 @@ CREATE TABLE items (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE INDEX idx_items_shop ON items(shop_id);
+CREATE INDEX idx_bali_items_shop ON bali_items(shop_id);
 
 -- ============================================
 -- UPVOTES
 -- ============================================
-CREATE TABLE upvotes (
+CREATE TABLE bali_upvotes (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
-  shop_id UUID REFERENCES shops(id) ON DELETE CASCADE,
+  user_id UUID REFERENCES bali_users(id) ON DELETE CASCADE,
+  shop_id UUID REFERENCES bali_shops(id) ON DELETE CASCADE,
   created_at TIMESTAMPTZ DEFAULT NOW(),
 
   UNIQUE(user_id, shop_id)
 );
 
-CREATE INDEX idx_upvotes_shop ON upvotes(shop_id);
-CREATE INDEX idx_upvotes_user ON upvotes(user_id);
+CREATE INDEX idx_bali_upvotes_shop ON bali_upvotes(shop_id);
+CREATE INDEX idx_bali_upvotes_user ON bali_upvotes(user_id);
 
 -- ============================================
 -- ANONYMOUS CONTRIBUTIONS
 -- ============================================
-CREATE TABLE anonymous_contributions (
+CREATE TABLE bali_anonymous_contributions (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   device_id TEXT NOT NULL,
-  shop_id UUID REFERENCES shops(id) ON DELETE CASCADE,
+  shop_id UUID REFERENCES bali_shops(id) ON DELETE CASCADE,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
@@ -106,44 +100,44 @@ CREATE TABLE anonymous_contributions (
 -- ============================================
 
 -- Function to update shop stats when items change
-CREATE OR REPLACE FUNCTION update_shop_stats()
+CREATE OR REPLACE FUNCTION bali_update_shop_stats()
 RETURNS TRIGGER AS $$
 BEGIN
-  UPDATE shops SET
-    item_count = (SELECT COUNT(*) FROM items WHERE shop_id = COALESCE(NEW.shop_id, OLD.shop_id)),
-    min_price_millions = (SELECT MIN(price_millions) FROM items WHERE shop_id = COALESCE(NEW.shop_id, OLD.shop_id)),
-    max_price_millions = (SELECT MAX(price_millions) FROM items WHERE shop_id = COALESCE(NEW.shop_id, OLD.shop_id)),
-    avg_price_millions = (SELECT AVG(price_millions) FROM items WHERE shop_id = COALESCE(NEW.shop_id, OLD.shop_id)),
+  UPDATE bali_shops SET
+    item_count = (SELECT COUNT(*) FROM bali_items WHERE shop_id = COALESCE(NEW.shop_id, OLD.shop_id)),
+    min_price_millions = (SELECT MIN(price_millions) FROM bali_items WHERE shop_id = COALESCE(NEW.shop_id, OLD.shop_id)),
+    max_price_millions = (SELECT MAX(price_millions) FROM bali_items WHERE shop_id = COALESCE(NEW.shop_id, OLD.shop_id)),
+    avg_price_millions = (SELECT AVG(price_millions) FROM bali_items WHERE shop_id = COALESCE(NEW.shop_id, OLD.shop_id)),
     updated_at = NOW()
   WHERE id = COALESCE(NEW.shop_id, OLD.shop_id);
   RETURN COALESCE(NEW, OLD);
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER trigger_update_shop_stats
-AFTER INSERT OR UPDATE OR DELETE ON items
-FOR EACH ROW EXECUTE FUNCTION update_shop_stats();
+CREATE TRIGGER trigger_bali_update_shop_stats
+AFTER INSERT OR UPDATE OR DELETE ON bali_items
+FOR EACH ROW EXECUTE FUNCTION bali_update_shop_stats();
 
 -- Function to update upvote count
-CREATE OR REPLACE FUNCTION update_upvote_count()
+CREATE OR REPLACE FUNCTION bali_update_upvote_count()
 RETURNS TRIGGER AS $$
 BEGIN
-  UPDATE shops SET
-    upvote_count = (SELECT COUNT(*) FROM upvotes WHERE shop_id = COALESCE(NEW.shop_id, OLD.shop_id)),
+  UPDATE bali_shops SET
+    upvote_count = (SELECT COUNT(*) FROM bali_upvotes WHERE shop_id = COALESCE(NEW.shop_id, OLD.shop_id)),
     updated_at = NOW()
   WHERE id = COALESCE(NEW.shop_id, OLD.shop_id);
   RETURN COALESCE(NEW, OLD);
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER trigger_update_upvote_count
-AFTER INSERT OR DELETE ON upvotes
-FOR EACH ROW EXECUTE FUNCTION update_upvote_count();
+CREATE TRIGGER trigger_bali_update_upvote_count
+AFTER INSERT OR DELETE ON bali_upvotes
+FOR EACH ROW EXECUTE FUNCTION bali_update_upvote_count();
 
 -- ============================================
 -- STORAGE BUCKETS (run in Supabase dashboard)
 -- ============================================
--- Create bucket: shop-photos
+-- Create bucket: bali-shop-photos
 -- Settings: Public read, public write (no auth required)
 -- Max file size: 5MB
 -- Allowed types: image/jpeg, image/png, image/webp

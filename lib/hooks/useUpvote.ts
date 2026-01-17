@@ -19,7 +19,7 @@ export const useToggleUpvote = () => {
 
       // Check if already upvoted
       const { data: existing } = await supabase
-        .from('upvotes')
+        .from('bali_upvotes')
         .select()
         .eq('shop_id', shopId)
         .eq('user_id', user.id)
@@ -27,7 +27,7 @@ export const useToggleUpvote = () => {
 
       if (existing) {
         // Remove upvote
-        await supabase.from('upvotes').delete().eq('id', existing.id)
+        await supabase.from('bali_upvotes').delete().eq('id', existing.id)
         return { action: 'removed' as const }
       } else {
         // Add upvote
@@ -35,7 +35,7 @@ export const useToggleUpvote = () => {
           shop_id: shopId,
           user_id: user.id,
         }
-        await supabase.from('upvotes').insert(upvoteInsert as never)
+        await supabase.from('bali_upvotes').insert(upvoteInsert as never)
         return { action: 'added' as const }
       }
     },

@@ -50,7 +50,7 @@ export default function RegisterPage() {
 
     if (authData.user) {
       // Create user profile
-      const { error: profileError } = await (supabase.from('users') as any).insert({
+      const { error: profileError } = await (supabase.from('bali_users') as any).insert({
         id: authData.user.id,
         email: data.email,
         username: data.username,
