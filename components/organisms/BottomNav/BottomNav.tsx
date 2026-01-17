@@ -24,7 +24,6 @@ export const BottomNav = () => {
 
   const handleNavClick = (item: NavItem) => {
     if (item.requiresAuth && !user) {
-      // Redirect to profile page for current user or login
       router.push('/login')
     } else if (item.href === '/profile' && user) {
       router.push(`/profile/${user.username}`)
@@ -41,7 +40,7 @@ export const BottomNav = () => {
   }
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 glass border-t border-medium">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 glass border-t border-charcoal-800">
       <div className="flex items-center justify-around py-2">
         {NAV_ITEMS.map((item) => (
           <button
@@ -50,8 +49,8 @@ export const BottomNav = () => {
             className={cn(
               'flex flex-col items-center gap-1 px-6 py-2 transition-colors',
               isActive(item.href)
-                ? 'text-gold'
-                : 'text-muted hover:text-cream'
+                ? 'text-gold-400'
+                : 'text-charcoal-400 hover:text-charcoal-100'
             )}
           >
             <span className="text-xl">{item.icon}</span>

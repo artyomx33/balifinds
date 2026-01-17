@@ -70,7 +70,7 @@ export const ShopSheet = ({ shopId, onClose }: ShopSheetProps) => {
       <div
         className={cn(
           'fixed bottom-0 left-0 right-0 z-50',
-          'bg-darker rounded-t-2xl',
+          'bg-charcoal-950 rounded-t-2xl',
           'transition-transform duration-300 ease-out',
           'max-h-[80vh] overflow-y-auto',
           isOpen ? 'translate-y-0' : 'translate-y-full'
@@ -78,7 +78,7 @@ export const ShopSheet = ({ shopId, onClose }: ShopSheetProps) => {
       >
         {/* Drag handle */}
         <div className="flex justify-center py-3">
-          <div className="w-12 h-1 bg-medium rounded-full" />
+          <div className="w-12 h-1 bg-charcoal-700 rounded-full" />
         </div>
 
         {isLoading ? (
@@ -110,11 +110,11 @@ export const ShopSheet = ({ shopId, onClose }: ShopSheetProps) => {
             {/* Price Range */}
             <div className="px-4 mt-3">
               {canViewPrices ? (
-                <Text variant="body" className="text-gold">
+                <Text variant="body" className="text-gold-400">
                   {formatPriceRange(shop.min_price_millions, shop.max_price_millions, currency)}
                 </Text>
               ) : (
-                <div className="flex items-center gap-2 text-muted">
+                <div className="flex items-center gap-2 text-charcoal-400">
                   <span>🔒</span>
                   <span className="text-sm">Login or contribute to see prices</span>
                 </div>
@@ -122,7 +122,7 @@ export const ShopSheet = ({ shopId, onClose }: ShopSheetProps) => {
             </div>
 
             {/* Meta info */}
-            <div className="px-4 mt-2 flex items-center gap-3 text-sm text-muted">
+            <div className="px-4 mt-2 flex items-center gap-3 text-sm text-charcoal-400">
               {shop.bali_users && (
                 <UserBadge
                   username={shop.bali_users.username}
@@ -138,7 +138,7 @@ export const ShopSheet = ({ shopId, onClose }: ShopSheetProps) => {
 
             {/* Items Grid */}
             <div className="px-4 mt-4">
-              <Text variant="small" className="text-muted mb-2">Items</Text>
+              <Text variant="small" className="text-charcoal-400 mb-2">Items</Text>
               {canViewItems && shop.bali_items && shop.bali_items.length > 0 ? (
                 <div className="grid grid-cols-3 gap-2">
                   {shop.bali_items.map((item) => (
@@ -162,7 +162,7 @@ export const ShopSheet = ({ shopId, onClose }: ShopSheetProps) => {
               ) : !canViewItems ? (
                 <div className="grid grid-cols-3 gap-2">
                   {[1, 2, 3].map((i) => (
-                    <div key={i} className="w-full aspect-square bg-dark rounded-md flex items-center justify-center">
+                    <div key={i} className="w-full aspect-square bg-charcoal-900 rounded-md flex items-center justify-center">
                       <span className="text-2xl">🔒</span>
                     </div>
                   ))}

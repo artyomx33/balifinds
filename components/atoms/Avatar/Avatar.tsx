@@ -19,7 +19,7 @@ export const Avatar = ({ src, alt = 'Avatar', size = 'md', fallback, className }
     return (
       <div
         className={cn(
-          'rounded-full bg-gold/20 text-gold flex items-center justify-center font-medium',
+          'rounded-full bg-gold-500/20 text-gold-400 flex items-center justify-center font-medium',
           sizeClasses[size],
           className
         )}

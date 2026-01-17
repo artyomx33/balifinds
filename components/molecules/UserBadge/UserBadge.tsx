@@ -16,7 +16,7 @@ export const UserBadge = ({ username, avatarUrl, size = 'md', className }: UserB
         size={size}
         fallback={username[0]?.toUpperCase()}
       />
-      <span className={cn('text-cream', size === 'sm' ? 'text-sm' : 'text-base')}>
+      <span className={cn('text-charcoal-200', size === 'sm' ? 'text-sm' : 'text-base')}>
         @{username}
       </span>
     </div>

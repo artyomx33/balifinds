@@ -2,7 +2,7 @@ import { cn } from '@/lib/utils/cn'
 
 export interface BadgeProps {
   children: React.ReactNode
-  variant?: 'default' | 'gold' | 'category'
+  variant?: 'default' | 'gold' | 'teal' | 'category'
   color?: string // For category variant custom colors
   className?: string
 }
@@ -11,10 +11,11 @@ export const Badge = ({ children, variant = 'default', color, className }: Badge
   return (
     <span
       className={cn(
-        'inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium',
+        'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium',
         {
-          'bg-dark text-cream border border-medium': variant === 'default',
-          'bg-gold/20 text-gold border border-gold/30': variant === 'gold',
+          'bg-charcoal-800 text-charcoal-300': variant === 'default',
+          'bg-gold-500/20 text-gold-400 border border-gold-500/30': variant === 'gold',
+          'bg-teal-500/20 text-teal-400 border border-teal-500/30': variant === 'teal',
         },
         className
       )}

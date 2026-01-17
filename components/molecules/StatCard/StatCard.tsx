@@ -8,9 +8,9 @@ export interface StatCardProps {
 
 export const StatCard = ({ value, label, className }: StatCardProps) => {
   return (
-    <div className={cn('text-center p-4 bg-dark rounded-lg border border-medium', className)}>
-      <div className="text-2xl font-bold text-gold">{value}</div>
-      <div className="text-sm text-muted">{label}</div>
+    <div className={cn('text-center p-4 bg-charcoal-900 rounded-xl border border-charcoal-800', className)}>
+      <div className="text-2xl font-bold text-gold-400">{value}</div>
+      <div className="text-sm text-charcoal-400">{label}</div>
     </div>
   )
 }

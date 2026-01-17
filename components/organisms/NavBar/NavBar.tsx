@@ -24,7 +24,7 @@ export const NavBar = ({ showSearch = true, className }: NavBarProps) => {
       {/* Logo */}
       <button
         onClick={() => router.push('/map')}
-        className="font-display text-xl font-bold text-gold"
+        className="font-serif text-xl font-bold text-gradient-gold"
       >
         BaliFinds
       </button>
@@ -34,14 +34,14 @@ export const NavBar = ({ showSearch = true, className }: NavBarProps) => {
         {/* Currency toggle */}
         <button
           onClick={cycleCurrency}
-          className="px-2 py-1 text-sm font-medium text-cream bg-dark rounded border border-medium hover:border-gold/50 transition-colors"
+          className="px-2 py-1 text-sm font-medium text-charcoal-100 bg-charcoal-900 rounded-lg border border-charcoal-700 hover:border-gold-500/50 transition-colors"
         >
           {currency}
         </button>
 
         {/* Profile/Login */}
         {isLoading ? (
-          <div className="w-10 h-10 rounded-full bg-dark animate-pulse" />
+          <div className="w-10 h-10 rounded-full bg-charcoal-800 animate-pulse" />
         ) : user ? (
           <button onClick={() => router.push(`/profile/${user.username}`)}>
             <Avatar
@@ -52,7 +52,7 @@ export const NavBar = ({ showSearch = true, className }: NavBarProps) => {
           </button>
         ) : (
           <Button
-            variant="ghost"
+            variant="outline"
             size="sm"
             onClick={() => router.push('/login')}
           >

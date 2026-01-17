@@ -35,7 +35,7 @@ export const PriceFilter = ({ className }: PriceFilterProps) => {
 
   return (
     <div className={cn('flex gap-2 overflow-x-auto no-scrollbar px-4', className)}>
-      <span className="text-sm text-muted whitespace-nowrap self-center">Price:</span>
+      <span className="text-sm text-charcoal-400 whitespace-nowrap self-center">Price:</span>
       {TIERS.map((tier) => (
         <FilterChip
           key={tier.key}

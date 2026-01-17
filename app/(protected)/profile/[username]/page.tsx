@@ -130,7 +130,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
                     alt="Shop"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform"
                   />
-                  <div className="absolute bottom-1 right-1 bg-black/70 px-1.5 py-0.5 rounded text-xs text-gold">
+                  <div className="absolute bottom-1 right-1 bg-black/70 px-1.5 py-0.5 rounded text-xs text-gold-400">
                     {shop.upvote_count}
                   </div>
                 </button>

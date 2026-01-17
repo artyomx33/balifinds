@@ -94,7 +94,7 @@ export default function LeaderboardPage() {
               'px-4 py-2 rounded-full text-sm font-medium transition-colors',
               period === 'month'
                 ? 'bg-gold text-black'
-                : 'bg-dark text-cream border border-medium'
+                : 'bg-charcoal-900 text-charcoal-100 border border-charcoal-700'
             )}
           >
             This Month
@@ -105,7 +105,7 @@ export default function LeaderboardPage() {
               'px-4 py-2 rounded-full text-sm font-medium transition-colors',
               period === 'all'
                 ? 'bg-gold text-black'
-                : 'bg-dark text-cream border border-medium'
+                : 'bg-charcoal-900 text-charcoal-100 border border-charcoal-700'
             )}
           >
             All Time
@@ -116,7 +116,7 @@ export default function LeaderboardPage() {
         <div className="mt-6 space-y-2">
           {isLoading ? (
             Array.from({ length: 10 }).map((_, i) => (
-              <div key={i} className="flex items-center gap-3 p-3 bg-dark rounded-lg">
+              <div key={i} className="flex items-center gap-3 p-3 bg-charcoal-900 rounded-lg">
                 <Skeleton className="w-8 h-8" />
                 <Skeleton variant="circular" className="w-10 h-10" />
                 <div className="flex-1 space-y-1">
@@ -131,13 +131,13 @@ export default function LeaderboardPage() {
                 key={leader.userId}
                 className={cn(
                   'flex items-center gap-3 p-3 rounded-lg',
-                  leader.rank <= 3 ? 'bg-dark border border-gold/30' : 'bg-dark'
+                  leader.rank <= 3 ? 'bg-charcoal-900 border border-gold-500/30' : 'bg-charcoal-900'
                 )}
               >
                 {/* Rank */}
                 <div className={cn(
                   'w-8 h-8 flex items-center justify-center font-bold',
-                  leader.rank <= 3 ? 'text-gold text-lg' : 'text-muted'
+                  leader.rank <= 3 ? 'text-gold-400 text-lg' : 'text-charcoal-400'
                 )}>
                   {getMedal(leader.rank)}
                 </div>

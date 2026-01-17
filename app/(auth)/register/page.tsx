@@ -70,7 +70,7 @@ export default function RegisterPage() {
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <Text variant="h1" className="text-gold">BaliFinds</Text>
+        <Text variant="h1" className="text-gradient-gold">BaliFinds</Text>
         <Text variant="muted" className="mt-2">Create your account</Text>
       </div>
 
@@ -113,14 +113,14 @@ export default function RegisterPage() {
         </Button>
       </form>
 
-      <p className="text-center text-sm text-muted">
+      <p className="text-center text-sm text-charcoal-400">
         Already have an account?{' '}
-        <Link href="/login" className="text-gold hover:underline">
+        <Link href="/login" className="text-gold-400 hover:underline">
           Login
         </Link>
       </p>
 
-      <Link href="/map" className="block text-center text-sm text-muted hover:text-cream">
+      <Link href="/map" className="block text-center text-sm text-charcoal-400 hover:text-charcoal-100">
         ← Back to map
       </Link>
     </div>

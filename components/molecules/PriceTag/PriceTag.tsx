@@ -13,7 +13,7 @@ export const PriceTag = ({ priceMillions, currency = 'IDR', size = 'md', classNa
   return (
     <span
       className={cn(
-        'font-medium text-gold',
+        'font-medium text-gold-400',
         {
           'text-xs': size === 'sm',
           'text-sm': size === 'md',

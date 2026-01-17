@@ -20,12 +20,13 @@ export const CategoryFilter = ({ className }: CategoryFilterProps) => {
   return (
     <div className={cn('flex gap-2 overflow-x-auto no-scrollbar px-4', className)}>
       <button
+        type="button"
         onClick={() => handleSelect(null)}
         className={cn(
           'px-3 py-1.5 text-sm rounded-full border whitespace-nowrap transition-all',
           !selectedCategory
-            ? 'bg-gold/20 border-gold text-gold'
-            : 'bg-dark border-medium text-cream hover:border-gold/50'
+            ? 'bg-gold-500/20 border-gold-500 text-gold-400'
+            : 'bg-charcoal-900 border-charcoal-700 text-charcoal-100 hover:border-gold-500/50'
         )}
       >
         All

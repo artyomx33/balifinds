@@ -52,7 +52,7 @@ export default function LoginPage() {
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <Text variant="h1" className="text-gold">BaliFinds</Text>
+        <Text variant="h1" className="text-gradient-gold">BaliFinds</Text>
         <Text variant="muted" className="mt-2">Welcome back</Text>
       </div>
 
@@ -86,14 +86,14 @@ export default function LoginPage() {
         </Button>
       </form>
 
-      <p className="text-center text-sm text-muted">
+      <p className="text-center text-sm text-charcoal-400">
         Don&apos;t have an account?{' '}
-        <Link href="/register" className="text-gold hover:underline">
+        <Link href="/register" className="text-gold-400 hover:underline">
           Register
         </Link>
       </p>
 
-      <Link href="/map" className="block text-center text-sm text-muted hover:text-cream">
+      <Link href="/map" className="block text-center text-sm text-charcoal-400 hover:text-charcoal-100">
         ← Back to map
       </Link>
     </div>

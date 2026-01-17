@@ -101,11 +101,11 @@ export default function AddShopPage() {
             if (step === 1) router.back()
             else setStep((step - 1) as 1 | 2 | 3)
           }}
-          className="text-cream"
+          className="text-charcoal-100"
         >
           ← Back
         </button>
-        <Text variant="small" className="text-muted">
+        <Text variant="small" className="text-charcoal-400">
           Step {step} of 3
         </Text>
       </div>
@@ -200,7 +200,7 @@ export default function AddShopPage() {
                 {!isCapturingItem && (
                   <button
                     onClick={() => setIsCapturingItem(true)}
-                    className="w-full aspect-square bg-dark border-2 border-dashed border-medium rounded-md flex items-center justify-center text-2xl text-muted hover:border-gold/50"
+                    className="w-full aspect-square bg-charcoal-900 border-2 border-dashed border-charcoal-700 rounded-md flex items-center justify-center text-2xl text-charcoal-400 hover:border-gold-500/50"
                   >
                     +
                   </button>

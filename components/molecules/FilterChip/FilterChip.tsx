@@ -10,12 +10,13 @@ export interface FilterChipProps {
 export const FilterChip = ({ label, selected, color, onClick }: FilterChipProps) => {
   return (
     <button
+      type="button"
       onClick={onClick}
       className={cn(
-        'px-3 py-1 rounded-full text-sm font-medium transition-all duration-200 border',
+        'px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-200 border',
         selected
-          ? 'border-transparent text-black'
-          : 'border-medium bg-dark text-cream hover:border-gold/50'
+          ? 'border-transparent text-charcoal-950'
+          : 'border-charcoal-700 bg-charcoal-900 text-charcoal-300 hover:border-charcoal-600'
       )}
       style={selected && color ? { backgroundColor: color } : undefined}
     >

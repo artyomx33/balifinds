@@ -27,7 +27,7 @@ export const CameraCapture = ({ onCapture, className }: CameraCaptureProps) => {
   return (
     <div className={cn('relative', className)}>
       {error ? (
-        <div className="flex flex-col items-center justify-center h-64 bg-dark rounded-lg p-4">
+        <div className="flex flex-col items-center justify-center h-64 bg-charcoal-900 rounded-lg p-4">
           <Text variant="muted" className="text-center mb-4">{error}</Text>
           <Button onClick={startCamera}>Try Again</Button>
         </div>
@@ -38,17 +38,18 @@ export const CameraCapture = ({ onCapture, className }: CameraCaptureProps) => {
             autoPlay
             playsInline
             muted
-            className="w-full h-auto rounded-lg bg-dark"
+            className="w-full h-auto rounded-lg bg-charcoal-900"
           />
           <canvas ref={canvasRef} className="hidden" />
 
           {isReady && (
             <div className="absolute bottom-4 left-0 right-0 flex justify-center">
               <button
+                type="button"
                 onClick={handleCapture}
-                className="w-16 h-16 rounded-full bg-white border-4 border-gold shadow-glow flex items-center justify-center hover:scale-105 transition-transform"
+                className="w-16 h-16 rounded-full bg-white border-4 border-gold-500 glow-gold flex items-center justify-center hover:scale-105 transition-transform"
               >
-                <div className="w-12 h-12 rounded-full bg-gold" />
+                <div className="w-12 h-12 rounded-full bg-gold-500" />
               </button>
             </div>
           )}
