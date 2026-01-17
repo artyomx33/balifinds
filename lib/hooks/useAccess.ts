@@ -20,6 +20,12 @@ export const useAccess = () => {
     const contributed = localStorage.getItem(CONTRIBUTION_KEY) === 'true'
     setHasContributed(contributed)
 
+    // If Supabase not configured, just use local storage mode
+    if (!supabase) {
+      setIsLoading(false)
+      return
+    }
+
     // Check auth state
     supabase.auth.getUser().then(({ data: { user: authUser } }: { data: { user: AuthUser | null } }) => {
       if (authUser) {

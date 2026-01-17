@@ -28,6 +28,7 @@ export const useShops = (filters?: ShopFilters) => {
   return useQuery({
     queryKey: ['shops', filters],
     queryFn: async () => {
+      if (!supabase) return []
       let query = (supabase.from('shops') as any)
         .select(`
           id,
@@ -68,6 +69,7 @@ export const useShopDetail = (shopId: string) => {
   return useQuery({
     queryKey: ['shop', shopId],
     queryFn: async () => {
+      if (!supabase) return null
       const { data, error } = await (supabase.from('shops') as any)
         .select(`
           *,
@@ -97,6 +99,7 @@ export const useCreateShop = () => {
       locationVerified: boolean
       items: { photoUrl: string; priceMillions: number }[]
     }) => {
+      if (!supabase) throw new Error('Supabase not configured')
       // Get current user (optional)
       const { data: { user } } = await supabase.auth.getUser()
 

@@ -13,6 +13,7 @@ export const useToggleUpvote = () => {
 
   return useMutation({
     mutationFn: async (shopId: string) => {
+      if (!supabase) throw new Error('Supabase not configured')
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) throw new Error('Must be logged in to upvote')
 
