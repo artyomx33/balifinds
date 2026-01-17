@@ -25,6 +25,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
   const { data: profile, isLoading: profileLoading } = useQuery({
     queryKey: ['profile', username],
     queryFn: async () => {
+      if (!supabase) return null
       const { data, error } = await (supabase.from('users') as any)
         .select('*')
         .eq('username', username)
@@ -38,7 +39,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
   const { data: shops, isLoading: shopsLoading } = useQuery({
     queryKey: ['user-shops', username],
     queryFn: async () => {
-      if (!profile) return []
+      if (!supabase || !profile) return []
       const { data, error } = await (supabase.from('shops') as any)
         .select('*')
         .eq('user_id', profile.id)
@@ -59,7 +60,9 @@ export default function ProfilePage({ params }: ProfilePageProps) {
   const isOwnProfile = currentUser?.username === username
 
   const handleLogout = async () => {
-    await supabase.auth.signOut()
+    if (supabase) {
+      await supabase.auth.signOut()
+    }
     router.push('/map')
     router.refresh()
   }

@@ -18,6 +18,7 @@ export default function LeaderboardPage() {
   const { data: leaders, isLoading } = useQuery({
     queryKey: ['leaderboard', period],
     queryFn: async () => {
+      if (!supabase) return []
       let query = supabase
         .from('shops')
         .select(`
