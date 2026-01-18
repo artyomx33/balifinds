@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback, useRef } from 'react'
+import { useState, useCallback, useRef, useEffect } from 'react'
 import Map, { Marker, NavigationControl, MapRef } from 'react-map-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import { MAPBOX_CONFIG } from '@/lib/mapbox/config'
@@ -20,9 +20,19 @@ export interface LocationPickerProps {
 export const LocationPicker = ({ userLocation, onLocationSelect, className, region = DEFAULT_REGION }: LocationPickerProps) => {
   const mapRef = useRef<MapRef>(null)
   const config = getRegionConfig(region)
-  const [pinLocation, setPinLocation] = useState<{ lat: number; lng: number } | null>(
-    userLocation ? { lat: userLocation.latitude, lng: userLocation.longitude } : null
-  )
+  const [pinLocation, setPinLocation] = useState<{ lat: number; lng: number } | null>(null)
+  const [hasAutoDropped, setHasAutoDropped] = useState(false)
+
+  // Auto-drop pin when user location becomes available
+  useEffect(() => {
+    if (userLocation && !hasAutoDropped && !pinLocation) {
+      const { latitude, longitude } = userLocation
+      setPinLocation({ lat: latitude, lng: longitude })
+      setHasAutoDropped(true)
+      // Auto-select with verified=true (user is at their own location)
+      onLocationSelect(latitude, longitude, true)
+    }
+  }, [userLocation, hasAutoDropped, pinLocation, onLocationSelect])
 
   const distance = pinLocation && userLocation
     ? calculateHaversineDistance(
@@ -109,7 +119,7 @@ export const LocationPicker = ({ userLocation, onLocationSelect, className, regi
       )}
 
       <Text variant="muted" className="text-xs">
-        Tap on the map to place the shop location
+        {pinLocation ? 'Tap to adjust location if needed' : 'Tap on the map to place the shop location'}
       </Text>
     </div>
   )
