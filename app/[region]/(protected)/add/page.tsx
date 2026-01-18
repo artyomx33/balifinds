@@ -29,6 +29,7 @@ export default function AddShopPage() {
   const [currentPrice, setCurrentPrice] = useState('')
   const [isCapturingItem, setIsCapturingItem] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSuccess, setIsSuccess] = useState(false)
 
   // Get user location on mount
   useEffect(() => {
@@ -65,6 +66,7 @@ export default function AddShopPage() {
 
   const handleSubmit = async () => {
     if (!shopPhoto || !location || !category || items.length === 0) return
+    if (isSubmitting || isSuccess) return // Prevent double submit
 
     setIsSubmitting(true)
 
@@ -86,8 +88,14 @@ export default function AddShopPage() {
       // Mark as contributed for access
       markContributed()
 
-      // Reset and go to map
-      router.push(`/${region}/map`)
+      // Show success state
+      setIsSubmitting(false)
+      setIsSuccess(true)
+
+      // Wait a moment so user sees success, then redirect
+      setTimeout(() => {
+        router.push(`/${region}/map`)
+      }, 1500)
     } catch (error) {
       console.error('Failed to create shop:', error)
       setIsSubmitting(false)
@@ -239,14 +247,24 @@ export default function AddShopPage() {
 
             {/* Submit */}
             {items.length > 0 && !isCapturingItem && (
-              <Button
-                onClick={handleSubmit}
-                disabled={isSubmitting}
-                isLoading={isSubmitting}
-                className="w-full"
-              >
-                Submit Shop
-              </Button>
+              isSuccess ? (
+                <div className="text-center py-8 space-y-4">
+                  <div className="w-16 h-16 mx-auto bg-green-500/20 rounded-full flex items-center justify-center">
+                    <span className="text-4xl">✓</span>
+                  </div>
+                  <Text variant="h3" className="text-green-400">Shop Added!</Text>
+                  <Text variant="muted">Redirecting to map...</Text>
+                </div>
+              ) : (
+                <Button
+                  onClick={handleSubmit}
+                  disabled={isSubmitting}
+                  isLoading={isSubmitting}
+                  className="w-full"
+                >
+                  Submit Shop
+                </Button>
+              )
             )}
           </div>
         )}
