@@ -3,8 +3,9 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button, Spinner, Skeleton, Badge, Text } from '@/components/atoms'
-import { PriceTag, UserBadge, UpvoteButton } from '@/components/molecules'
-import { useShopDetail, useAccess, useCurrency, useToggleUpvote } from '@/lib/hooks'
+import { PriceTag, UserBadge, UpvoteButton, InputField } from '@/components/molecules'
+import { CameraCapture } from '@/components/organisms/CameraCapture'
+import { useShopDetail, useAccess, useCurrency, useToggleUpvote, useAddItem } from '@/lib/hooks'
 import { useAppStore } from '@/store'
 import { CATEGORIES } from '@/types'
 import { formatPriceRange } from '@/lib/utils/price'
@@ -22,7 +23,10 @@ export const ShopSheet = ({ shopId, onClose, region }: ShopSheetProps) => {
   const { canViewPrices, canViewItems, user } = useAccess()
   const { currency } = useCurrency()
   const toggleUpvote = useToggleUpvote()
+  const addItem = useAddItem()
   const [isOpen, setIsOpen] = useState(false)
+  const [isAddingItem, setIsAddingItem] = useState(false)
+  const [itemPrice, setItemPrice] = useState('')
 
   useEffect(() => {
     if (shopId) {
@@ -51,6 +55,23 @@ export const ShopSheet = ({ shopId, onClose, region }: ShopSheetProps) => {
     if (shop) {
       const url = `https://www.google.com/maps/dir/?api=1&destination=${shop.latitude},${shop.longitude}`
       window.open(url, '_blank')
+    }
+  }
+
+  const handleItemCapture = async (dataUrl: string) => {
+    const price = parseFloat(itemPrice)
+    if (!shopId || isNaN(price) || price <= 0) return
+
+    try {
+      await addItem.mutateAsync({
+        shopId,
+        photoUrl: dataUrl,
+        priceMillions: price,
+      })
+      setItemPrice('')
+      setIsAddingItem(false)
+    } catch (error) {
+      console.error('Failed to add item:', error)
     }
   }
 
@@ -170,6 +191,51 @@ export const ShopSheet = ({ shopId, onClose, region }: ShopSheetProps) => {
                 </div>
               ) : (
                 <Text variant="muted">No items added yet</Text>
+              )}
+            </div>
+
+            {/* Add Item Section */}
+            <div className="px-4 mt-4">
+              {isAddingItem ? (
+                <div className="space-y-3 bg-charcoal-900 p-3 rounded-lg">
+                  <Text variant="small" className="text-gold-400">Add new item</Text>
+
+                  <InputField
+                    label="Price (millions IDR)"
+                    type="number"
+                    step="0.1"
+                    placeholder="Enter price first"
+                    value={itemPrice}
+                    onChange={(e) => setItemPrice(e.target.value)}
+                  />
+
+                  {!itemPrice && (
+                    <div className="bg-red-900/30 text-red-400 px-3 py-2 rounded-lg text-sm text-center">
+                      Enter price above, then tap to capture
+                    </div>
+                  )}
+
+                  <CameraCapture onCapture={handleItemCapture} />
+
+                  <Button
+                    variant="ghost"
+                    onClick={() => {
+                      setIsAddingItem(false)
+                      setItemPrice('')
+                    }}
+                    className="w-full"
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              ) : (
+                <Button
+                  variant="secondary"
+                  onClick={() => setIsAddingItem(true)}
+                  className="w-full"
+                >
+                  + Add Item & Price
+                </Button>
               )}
             </div>
 

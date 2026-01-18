@@ -151,3 +151,35 @@ export const useCreateShop = () => {
     },
   })
 }
+
+export const useAddItem = () => {
+  const supabase = getSupabaseClient()
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: async (data: {
+      shopId: string
+      photoUrl: string
+      priceMillions: number
+    }) => {
+      if (!supabase) throw new Error('Supabase not configured')
+
+      const { data: item, error } = await (supabase.from('items') as any)
+        .insert({
+          shop_id: data.shopId,
+          photo_url: data.photoUrl,
+          price_millions: data.priceMillions,
+        })
+        .select()
+        .single()
+
+      if (error) throw error
+      return item
+    },
+    onSuccess: (_, variables) => {
+      // Refresh the shop detail and shops list
+      queryClient.invalidateQueries({ queryKey: ['shop', variables.shopId] })
+      queryClient.invalidateQueries({ queryKey: ['shops'] })
+    },
+  })
+}
