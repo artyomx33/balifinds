@@ -222,16 +222,25 @@ export default function AddShopPage() {
             {/* Capture item */}
             {(isCapturingItem || items.length === 0) && (
               <div className="space-y-3">
-                <CameraCapture onCapture={handleItemCapture} />
-
+                {/* Price input FIRST - above camera */}
                 <InputField
                   label="Price (millions IDR)"
                   type="number"
                   step="0.1"
-                  placeholder="5.5"
+                  placeholder="Enter price first, then take photo"
                   value={currentPrice}
                   onChange={(e) => setCurrentPrice(e.target.value)}
                 />
+
+                {/* Show message if no price */}
+                {!currentPrice && (
+                  <div className="bg-red-900/30 text-red-400 px-3 py-2 rounded-lg text-sm text-center">
+                    Enter price above, then tap to capture
+                  </div>
+                )}
+
+                {/* Camera - square aspect ratio */}
+                <CameraCapture onCapture={handleItemCapture} />
 
                 {items.length > 0 && (
                   <Button

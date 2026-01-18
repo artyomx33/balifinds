@@ -32,13 +32,13 @@ export const CameraCapture = ({ onCapture, className }: CameraCaptureProps) => {
           <Button onClick={startCamera}>Try Again</Button>
         </div>
       ) : (
-        <>
+        <div className="relative aspect-square w-full overflow-hidden rounded-lg bg-charcoal-900">
           <video
             ref={videoRef}
             autoPlay
             playsInline
             muted
-            className="w-full h-auto rounded-lg bg-charcoal-900"
+            className="absolute inset-0 w-full h-full object-cover"
           />
           <canvas ref={canvasRef} className="hidden" />
 
@@ -53,7 +53,7 @@ export const CameraCapture = ({ onCapture, className }: CameraCaptureProps) => {
               </button>
             </div>
           )}
-        </>
+        </div>
       )}
     </div>
   )
