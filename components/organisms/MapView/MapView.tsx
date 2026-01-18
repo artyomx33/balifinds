@@ -4,24 +4,27 @@ import { useRef, useCallback, useEffect } from 'react'
 import Map, { Marker, NavigationControl, GeolocateControl, MapRef } from 'react-map-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import { MAPBOX_CONFIG } from '@/lib/mapbox/config'
-import { BALI_BOUNDS, DEFAULT_CENTER, DEFAULT_ZOOM } from '@/lib/constants/map'
 import { getPriceHeatColor, getCircleRadius } from '@/lib/constants/price-tiers'
 import { useShops } from '@/lib/hooks'
 import { useAppStore } from '@/store'
+import { getRegionConfig, DEFAULT_REGION } from '@/lib/regions'
 import { cn } from '@/lib/utils/cn'
 
 export interface MapViewProps {
   className?: string
   onShopClick?: (shopId: string) => void
+  region?: string
 }
 
-export const MapView = ({ className, onShopClick }: MapViewProps) => {
+export const MapView = ({ className, onShopClick, region = DEFAULT_REGION }: MapViewProps) => {
   const mapRef = useRef<MapRef>(null)
   const { selectedCategory, priceFilter, setCenter, setZoom } = useAppStore()
+  const config = getRegionConfig(region)
 
   const { data: shops, isLoading } = useShops({
     category: selectedCategory || undefined,
     maxPrice: priceFilter.max,
+    region,
   })
 
   const handleMove = useCallback(() => {
@@ -39,15 +42,15 @@ export const MapView = ({ className, onShopClick }: MapViewProps) => {
         ref={mapRef}
         mapboxAccessToken={MAPBOX_CONFIG.accessToken}
         initialViewState={{
-          longitude: DEFAULT_CENTER.longitude,
-          latitude: DEFAULT_CENTER.latitude,
-          zoom: DEFAULT_ZOOM,
+          longitude: config.lng,
+          latitude: config.lat,
+          zoom: config.zoom,
         }}
         style={{ width: '100%', height: '100%' }}
         mapStyle={MAPBOX_CONFIG.style}
         maxBounds={[
-          [BALI_BOUNDS.west, BALI_BOUNDS.south],
-          [BALI_BOUNDS.east, BALI_BOUNDS.north],
+          [config.bounds.west, config.bounds.south],
+          [config.bounds.east, config.bounds.north],
         ]}
         onMoveEnd={handleMove}
         attributionControl={false}

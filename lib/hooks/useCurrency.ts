@@ -3,7 +3,7 @@
 import { useState, useCallback } from 'react'
 import type { Currency } from '@/types'
 
-const CURRENCY_KEY = 'balifinds_currency'
+const CURRENCY_KEY = 'cityfinds_currency'
 const CURRENCIES: Currency[] = ['IDR', 'USD', 'EUR']
 
 export const useCurrency = () => {

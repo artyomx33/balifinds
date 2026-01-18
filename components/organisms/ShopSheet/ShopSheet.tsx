@@ -13,9 +13,10 @@ import { cn } from '@/lib/utils/cn'
 export interface ShopSheetProps {
   shopId: string | null
   onClose: () => void
+  region?: string
 }
 
-export const ShopSheet = ({ shopId, onClose }: ShopSheetProps) => {
+export const ShopSheet = ({ shopId, onClose, region }: ShopSheetProps) => {
   const router = useRouter()
   const { data: shop, isLoading } = useShopDetail(shopId || '')
   const { canViewPrices, canViewItems, user } = useAccess()
@@ -123,10 +124,10 @@ export const ShopSheet = ({ shopId, onClose }: ShopSheetProps) => {
 
             {/* Meta info */}
             <div className="px-4 mt-2 flex items-center gap-3 text-sm text-charcoal-400">
-              {shop.bali_users && (
+              {shop.users && (
                 <UserBadge
-                  username={shop.bali_users.username}
-                  avatarUrl={shop.bali_users.avatar_url}
+                  username={shop.users.username}
+                  avatarUrl={shop.users.avatar_url}
                   size="sm"
                 />
               )}
@@ -139,9 +140,9 @@ export const ShopSheet = ({ shopId, onClose }: ShopSheetProps) => {
             {/* Items Grid */}
             <div className="px-4 mt-4">
               <Text variant="small" className="text-charcoal-400 mb-2">Items</Text>
-              {canViewItems && shop.bali_items && shop.bali_items.length > 0 ? (
+              {canViewItems && shop.items && shop.items.length > 0 ? (
                 <div className="grid grid-cols-3 gap-2">
-                  {shop.bali_items.map((item) => (
+                  {shop.items.map((item) => (
                     <div key={item.id} className="relative">
                       <img
                         src={item.photo_url}

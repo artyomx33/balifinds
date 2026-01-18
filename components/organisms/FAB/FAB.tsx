@@ -2,17 +2,19 @@
 
 import { useRouter } from 'next/navigation'
 import { cn } from '@/lib/utils/cn'
+import { DEFAULT_REGION } from '@/lib/regions'
 
 export interface FABProps {
   className?: string
+  region?: string
 }
 
-export const FAB = ({ className }: FABProps) => {
+export const FAB = ({ className, region = DEFAULT_REGION }: FABProps) => {
   const router = useRouter()
 
   return (
     <button
-      onClick={() => router.push('/add')}
+      onClick={() => router.push(`/${region}/add`)}
       className={cn(
         'fixed bottom-20 right-4 z-40',
         'w-14 h-14 rounded-full',

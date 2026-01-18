@@ -3,22 +3,28 @@
 import { usePathname, useRouter } from 'next/navigation'
 import { cn } from '@/lib/utils/cn'
 import { useAccess } from '@/lib/hooks'
+import { DEFAULT_REGION } from '@/lib/regions'
 
 interface NavItem {
   icon: string
   label: string
   href: string
   requiresAuth?: boolean
+  isGlobal?: boolean
 }
 
 const NAV_ITEMS: NavItem[] = [
   { icon: '🗺️', label: 'Map', href: '/map' },
   { icon: '📍', label: 'Nearby', href: '/nearby' },
-  { icon: '👤', label: 'Profile', href: '/profile', requiresAuth: true },
-  { icon: '🏆', label: 'Leaders', href: '/leaderboard' },
+  { icon: '👤', label: 'Profile', href: '/profile', requiresAuth: true, isGlobal: true },
+  { icon: '🏆', label: 'Leaders', href: '/leaderboard', isGlobal: true },
 ]
 
-export const BottomNav = () => {
+interface BottomNavProps {
+  region?: string
+}
+
+export const BottomNav = ({ region = DEFAULT_REGION }: BottomNavProps) => {
   const router = useRouter()
   const pathname = usePathname()
   const { user } = useAccess()
@@ -28,8 +34,10 @@ export const BottomNav = () => {
       router.push('/login')
     } else if (item.href === '/profile' && user) {
       router.push(`/profile/${user.username}`)
-    } else {
+    } else if (item.isGlobal) {
       router.push(item.href)
+    } else {
+      router.push(`/${region}${item.href}`)
     }
   }
 
@@ -37,7 +45,11 @@ export const BottomNav = () => {
     if (href === '/profile') {
       return pathname.startsWith('/profile')
     }
-    return pathname === href || pathname.startsWith(href + '/')
+    if (href === '/leaderboard') {
+      return pathname === '/leaderboard'
+    }
+    // For region-specific routes
+    return pathname.includes(href)
   }
 
   return (

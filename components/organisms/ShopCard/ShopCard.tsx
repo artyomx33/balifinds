@@ -14,7 +14,7 @@ interface ShopCardProps {
     category: string
     upvote_count: number
     item_count: number
-    bali_items?: Array<{ id: string; photo_url: string; price_millions: number }>
+    items?: Array<{ id: string; photo_url: string; price_millions: number }>
   }
   distance: number | null
   onClick: () => void
@@ -24,7 +24,7 @@ interface ShopCardProps {
 export const ShopCard = ({ shop, distance, onClick, className }: ShopCardProps) => {
   const { currency } = useCurrency()
   const categoryInfo = CATEGORIES[shop.category as keyof typeof CATEGORIES]
-  const items = shop.bali_items || []
+  const items = shop.items || []
 
   return (
     <button

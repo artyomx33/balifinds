@@ -4,20 +4,20 @@ import { QueryProvider } from '@/providers'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'BaliFinds - Discover Hidden Treasures',
-  description: 'Discover hidden artisan treasures in Bali - wood carvings, ceramics, and stone sculptures',
+  title: 'CityFinds - Discover Hidden Treasures',
+  description: 'Discover hidden artisan treasures - wood carvings, ceramics, and stone sculptures',
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
-    title: 'BaliFinds',
+    title: 'CityFinds',
   },
   formatDetection: {
     telephone: false,
   },
   openGraph: {
-    title: 'BaliFinds - Discover Hidden Treasures',
-    description: 'Discover hidden artisan treasures in Bali',
+    title: 'CityFinds - Discover Hidden Treasures',
+    description: 'Discover hidden artisan treasures',
     type: 'website',
   },
 }

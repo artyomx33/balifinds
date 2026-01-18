@@ -6,7 +6,7 @@ import type { AccessState, User } from '@/types'
 import type { Tables } from '@/types/database'
 import type { User as AuthUser, AuthChangeEvent, Session } from '@supabase/supabase-js'
 
-const CONTRIBUTION_KEY = 'balifinds_contributed'
+const CONTRIBUTION_KEY = 'cityfinds_contributed'
 
 export const useAccess = () => {
   const [user, setUser] = useState<User | null>(null)
@@ -30,7 +30,7 @@ export const useAccess = () => {
     supabase.auth.getUser().then(({ data: { user: authUser } }: { data: { user: AuthUser | null } }) => {
       if (authUser) {
         // Fetch full user profile
-        (supabase.from('bali_users') as any)
+        (supabase.from('users') as any)
           .select('*')
           .eq('id', authUser.id)
           .single()

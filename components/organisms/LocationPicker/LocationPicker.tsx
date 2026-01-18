@@ -1,24 +1,25 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useRef } from 'react'
 import Map, { Marker, NavigationControl, MapRef } from 'react-map-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import { MAPBOX_CONFIG } from '@/lib/mapbox/config'
-import { BALI_BOUNDS } from '@/lib/constants/map'
 import { Text } from '@/components/atoms'
 import { calculateHaversineDistance, formatDistance } from '@/lib/utils/distance'
 import { LOCATION_ACCURACY_THRESHOLD } from '@/lib/constants/map'
+import { getRegionConfig, DEFAULT_REGION } from '@/lib/regions'
 import { cn } from '@/lib/utils/cn'
-import { useRef } from 'react'
 
 export interface LocationPickerProps {
   userLocation: { latitude: number; longitude: number } | null
   onLocationSelect: (lat: number, lng: number, verified: boolean) => void
   className?: string
+  region?: string
 }
 
-export const LocationPicker = ({ userLocation, onLocationSelect, className }: LocationPickerProps) => {
+export const LocationPicker = ({ userLocation, onLocationSelect, className, region = DEFAULT_REGION }: LocationPickerProps) => {
   const mapRef = useRef<MapRef>(null)
+  const config = getRegionConfig(region)
   const [pinLocation, setPinLocation] = useState<{ lat: number; lng: number } | null>(
     userLocation ? { lat: userLocation.latitude, lng: userLocation.longitude } : null
   )
@@ -53,15 +54,15 @@ export const LocationPicker = ({ userLocation, onLocationSelect, className }: Lo
           ref={mapRef}
           mapboxAccessToken={MAPBOX_CONFIG.accessToken}
           initialViewState={{
-            longitude: userLocation?.longitude || 115.2625,
-            latitude: userLocation?.latitude || -8.5069,
+            longitude: userLocation?.longitude || config.lng,
+            latitude: userLocation?.latitude || config.lat,
             zoom: 15,
           }}
           style={{ width: '100%', height: '100%' }}
           mapStyle={MAPBOX_CONFIG.style}
           maxBounds={[
-            [BALI_BOUNDS.west, BALI_BOUNDS.south],
-            [BALI_BOUNDS.east, BALI_BOUNDS.north],
+            [config.bounds.west, config.bounds.south],
+            [config.bounds.east, config.bounds.north],
           ]}
           onClick={handleMapClick}
         >

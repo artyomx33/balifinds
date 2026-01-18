@@ -3,17 +3,20 @@
 import { useRouter } from 'next/navigation'
 import { Button, Avatar } from '@/components/atoms'
 import { useCurrency, useAccess } from '@/lib/hooks'
+import { getRegionConfig, DEFAULT_REGION } from '@/lib/regions'
 import { cn } from '@/lib/utils/cn'
 
 export interface NavBarProps {
   showSearch?: boolean
   className?: string
+  region?: string
 }
 
-export const NavBar = ({ showSearch = true, className }: NavBarProps) => {
+export const NavBar = ({ showSearch = true, className, region = DEFAULT_REGION }: NavBarProps) => {
   const router = useRouter()
   const { currency, cycleCurrency } = useCurrency()
   const { user, isLoading } = useAccess()
+  const config = getRegionConfig(region)
 
   return (
     <nav className={cn(
@@ -23,10 +26,10 @@ export const NavBar = ({ showSearch = true, className }: NavBarProps) => {
     )}>
       {/* Logo */}
       <button
-        onClick={() => router.push('/map')}
+        onClick={() => router.push(`/${region}/map`)}
         className="font-serif text-xl font-bold text-gradient-gold"
       >
-        BaliFinds
+        {config.displayName}
       </button>
 
       {/* Right side */}

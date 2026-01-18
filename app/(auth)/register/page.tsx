@@ -50,7 +50,7 @@ export default function RegisterPage() {
 
     if (authData.user) {
       // Create user profile
-      const { error: profileError } = await (supabase.from('bali_users') as any).insert({
+      const { error: profileError } = await (supabase.from('users') as any).insert({
         id: authData.user.id,
         email: data.email,
         username: data.username,
@@ -62,7 +62,7 @@ export default function RegisterPage() {
         return
       }
 
-      router.push('/map')
+      router.push('/bali/map')
       router.refresh()
     }
   }
@@ -70,7 +70,7 @@ export default function RegisterPage() {
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <Text variant="h1" className="text-gradient-gold">BaliFinds</Text>
+        <Text variant="h1" className="text-gradient-gold">CityFinds</Text>
         <Text variant="muted" className="mt-2">Create your account</Text>
       </div>
 
@@ -120,7 +120,7 @@ export default function RegisterPage() {
         </Link>
       </p>
 
-      <Link href="/map" className="block text-center text-sm text-charcoal-400 hover:text-charcoal-100">
+      <Link href="/bali/map" className="block text-center text-sm text-charcoal-400 hover:text-charcoal-100">
         ← Back to map
       </Link>
     </div>

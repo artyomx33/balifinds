@@ -44,7 +44,7 @@ export default function LoginPage() {
       setError(error.message)
       setIsLoading(false)
     } else {
-      router.push('/map')
+      router.push('/bali/map')
       router.refresh()
     }
   }
@@ -52,7 +52,7 @@ export default function LoginPage() {
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <Text variant="h1" className="text-gradient-gold">BaliFinds</Text>
+        <Text variant="h1" className="text-gradient-gold">CityFinds</Text>
         <Text variant="muted" className="mt-2">Welcome back</Text>
       </div>
 
@@ -93,7 +93,7 @@ export default function LoginPage() {
         </Link>
       </p>
 
-      <Link href="/map" className="block text-center text-sm text-charcoal-400 hover:text-charcoal-100">
+      <Link href="/bali/map" className="block text-center text-sm text-charcoal-400 hover:text-charcoal-100">
         ← Back to map
       </Link>
     </div>

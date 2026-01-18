@@ -26,7 +26,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
     queryKey: ['profile', username],
     queryFn: async () => {
       if (!supabase) return null
-      const { data, error } = await (supabase.from('bali_users') as any)
+      const { data, error } = await (supabase.from('users') as any)
         .select('*')
         .eq('username', username)
         .single()
@@ -40,7 +40,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
     queryKey: ['user-shops', username],
     queryFn: async () => {
       if (!supabase || !profile) return []
-      const { data, error } = await (supabase.from('bali_shops') as any)
+      const { data, error } = await (supabase.from('shops') as any)
         .select('*')
         .eq('user_id', profile.id)
         .order('created_at', { ascending: false })
@@ -63,7 +63,7 @@ export default function ProfilePage({ params }: ProfilePageProps) {
     if (supabase) {
       await supabase.auth.signOut()
     }
-    router.push('/map')
+    router.push('/bali/map')
     router.refresh()
   }
 
