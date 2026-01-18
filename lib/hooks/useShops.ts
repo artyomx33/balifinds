@@ -48,7 +48,8 @@ export const useShops = (filters?: ShopFiltersWithRegion) => {
           max_price_millions,
           created_at,
           region,
-          users!left(username, avatar_url)
+          users!left(username, avatar_url),
+          items(id, photo_url, price_millions)
         `)
 
       if (filters?.region) {
